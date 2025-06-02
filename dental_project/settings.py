@@ -30,8 +30,17 @@ DEBUG = False
 LOGIN_REDIRECT_URL = '/records/dashboard/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
-ALLOWED_HOSTS = ['gestordental-a3anfwdygraqerc7.mexicocentral-01.azurewebsites.net',
-                   'localhost', 'http://127.0.0.1:8000/']
+ALLOWED_HOSTS = [
+    'gestordental-a3anfwdygraqerc7.mexicocentral-01.azurewebsites.net',
+    'localhost',
+    '127.0.0.1',
+]
+CSRF_TRUSTED_ORIGINS = [
+    'https://gestordental-a3anfwdygraqerc7.mexicocentral-01.azurewebsites.net'
+]
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE    = True
 
 
 # Application definition

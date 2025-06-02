@@ -38,7 +38,7 @@ def create_encrypted_record(request):
         if not patient_name:
             return JsonResponse({'error': 'Missing patient_name'}, status=400)
 
-        key = os.urandom(32)  # AES-256
+        key = os.urandom(32) 
         ciphertext, iv = encrypt_record_aes_cbc(record_data, key)
 
         # Guardar o actualizar (si ya existe nombre, lo reemplaza)
@@ -87,13 +87,6 @@ def read_encrypted_record(request):
 
     return JsonResponse({'error': 'Only POST allowed'}, status=405)
 
-
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
-from .models import EncryptedRecord
-from .utils.crypto import encrypt_record_aes_cbc, decrypt_record_aes_cbc
-import os
 
 @login_required
 def create_record_form(request):
