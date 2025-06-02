@@ -30,7 +30,8 @@ DEBUG = True
 LOGIN_REDIRECT_URL = '/records/dashboard/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['gestordental-a3anfwdygraqerc7.mexicocentral-01.azurewebsites.net',
+                   'localhost']
 
 
 # Application definition
