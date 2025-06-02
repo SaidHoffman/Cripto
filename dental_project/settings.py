@@ -24,14 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xzm2_&0q^#h7glx@!7qjs*vd)phr*1071c*=bg0o4t*xod=ja_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 LOGIN_REDIRECT_URL = '/records/dashboard/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 
 ALLOWED_HOSTS = ['gestordental-a3anfwdygraqerc7.mexicocentral-01.azurewebsites.net',
-                   'localhost']
+                   'localhost', 'http://127.0.0.1:8000/']
 
 
 # Application definition

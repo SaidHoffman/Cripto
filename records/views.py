@@ -18,6 +18,9 @@ def dashboard(request):
         'recent_records': recent_records
     })
 
+def home(request):
+    return render(request, 'home.html') 
+
 
 @csrf_exempt
 def create_encrypted_record(request):
