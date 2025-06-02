@@ -1,0 +1,116 @@
+{% extends "base_generic.html" %}
+{% block title %}Buscar Expediente – Expedientes Seguros{% endblock %}
+
+{% block content %}
+<div class="max-w-md mx-auto mt-8 mb-12 animate-fade-in">
+  <!-- TARJETA PRINCIPAL -->
+  <div class="bg-white dark:bg-dark-700 rounded-2xl shadow-lg overflow-hidden">
+    <!-- Encabezado con gradiente -->
+    <div class="text-center py-4 bg-gradient-to-br from-white to-bggradientStart">
+      <h2 class="text-2xl font-extrabold text-secondary-dark dark:text-secondary mb-1">
+        Buscar Expediente 🔍
+      </h2>
+      <p class="text-gray-600 dark:text-gray-400">
+        Introduce el nombre del paciente
+      </p>
+    </div>
+
+    <!-- CUERPO DE LA TARJETA -->
+    <div class="p-6 bg-white dark:bg-dark-800">
+      {% if messages %}
+        {% for message in messages %}
+          <div
+            class="mb-4 px-4 py-2 rounded-lg shadow-sm text-sm
+                   {% if message.tags == 'success' %}bg-green-100 text-green-800{% endif %}
+                   {% if message.tags == 'error' %}bg-red-100 text-red-800{% endif %}
+                   {% if message.tags == 'warning' %}bg-yellow-100 text-yellow-800{% endif %}"
+            role="alert"
+          >
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+
+      <form method="post" class="space-y-6 needs-validation" novalidate>
+        {% csrf_token %}
+        <div>
+          <label for="patient_name" class="block text-gray-700 dark:text-gray-300 mb-1">
+            Nombre del Paciente <span class="text-red-500">*</span>
+          </label>
+          <input
+            type="text"
+            name="patient_name"
+            id="patient_name"
+            class="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg
+                   bg-gray-50 dark:bg-dark-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-green-500"
+            placeholder="Ej. Juan Pérez"
+            required
+          >
+          <p class="mt-1 text-sm text-red-500 hidden">
+            Por favor ingresa el nombre completo.
+          </p>
+        </div>
+
+        <div class="pt-4">
+          <button
+            type="submit"
+            class="w-full bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700 text-white text-lg font-semibold
+                   px-6 py-3 rounded-2xl focus:outline-none focus:ring-2 focus:ring-green-400 transition-transform transform hover:scale-105"
+          >
+            Buscar y Descifrar
+          </button>
+        </div>
+      </form>
+
+      {% if found %}
+        <hr class="my-6 border-gray-200 dark:border-gray-700">
+        <h3 class="text-xl font-semibold text-gray-800 dark:text-gray-200 mb-2">
+          Expediente de {{ record_data.patient_name }}:
+        </h3>
+        <div class="p-4 border border-gray-200 dark:border-gray-700 rounded-lg bg-gray-100 dark:bg-dark-700 whitespace-pre-wrap text-gray-900 dark:text-gray-100">
+          {{ record_data.plaintext }}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- PIE DE LA TARJETA: enlace de regreso -->
+    <div class="text-center py-3 bg-gray-50 dark:bg-dark-700">
+      <a
+        href="{% url 'dashboard' %}"
+        class="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium focus:outline-none focus:underline"
+      >
+        ← Volver al Dashboard
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript para validación personalizada -->
+<script>
+  (function () {
+    'use strict';
+    const form = document.querySelector('.needs-validation');
+    form.addEventListener('submit', (event) => {
+      const input = form.querySelector('input[name="patient_name"]');
+      let valid = true;
+
+      // Validar campo de nombre
+      if (!input.value.trim()) {
+        input.classList.add('border-red-500');
+        input.nextElementSibling.classList.remove('hidden');
+        valid = false;
+      } else {
+        input.classList.remove('border-red-500');
+        input.nextElementSibling.classList.add('hidden');
+      }
+
+      // Validación HTML5 + nuestra validación
+      if (!form.checkValidity() || !valid) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    });
+  })();
+</script>
+{% endblock %}
