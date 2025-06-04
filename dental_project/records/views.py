@@ -12,11 +12,21 @@ import os
 
 @login_required
 def dashboard(request):
-    # Obtener los 5 expedientes más recientes (ordenados por timestamp descendente)
     recent_records = EncryptedRecord.objects.order_by('-timestamp')[:5]
+
+    total_patients = EncryptedRecord.objects.count()
+
+    # Por ahora, citas y pendientes no están implementados
+    total_appointments = "N/D"
+    pending_records = "N/D"
+
     return render(request, 'records/dashboard.html', {
-        'recent_records': recent_records
+        'recent_records': recent_records,
+        'total_patients': total_patients,
+        'total_appointments': total_appointments,
+        'pending_records': pending_records,
     })
+
 
 
 @csrf_exempt

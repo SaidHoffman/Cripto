@@ -48,7 +48,6 @@ def create_encrypted_record(request):
                 'ciphertext': ciphertext,
                 'iv'        : iv,
                 'wrap_key'  : key,
-                'signature' : b'',
             }
         )
 
@@ -163,7 +162,6 @@ def create_record_form(request):
                 'ciphertext': ciphertext,
                 'iv': iv,
                 'wrap_key': key,
-                'signature': b'',
             }
         )
 

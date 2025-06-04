@@ -23,7 +23,6 @@
       </p>
     </div>
 
-    <!-- ESTADÍSTICAS RÁPIDAS -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
       <!-- Total Pacientes -->
       <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
@@ -104,7 +103,7 @@
             Crear Nuevo Expediente
           </h3>
           <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
-            Cifra y registra un expediente clínico de forma segura con encriptación de extremo a extremo.
+            Cifra y registra un expediente clínico de forma segura con cifrado AES CBC de 256 bits.
           </p>
           <a
             href="{% url 'create_record_form' %}"
