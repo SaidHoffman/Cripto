@@ -3,124 +3,278 @@
 
 {% block content %}
 <!-- CONTENEDOR PRINCIPAL -->
-<div class="space-y-8">
-
-  <!-- SALUDO Y DESCRIPCIÓN -->
-  <div class="text-center">
-    <h1 class="text-5xl font-extrabold text-gray-900 dark:text-white mb-2 animate-fade-in">
-      ¡Hola, {{ user.first_name|default:user.username }}! 👋
-    </h1>
-    <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto animate-fade-in delay-150">
-      Bienvenido a tu panel de control. Desde aquí puedes gestionar tus expedientes clínicos de forma segura y eficiente.
-    </p>
-  </div>
-
-  <!-- SECCIÓN DE ESTADÍSTICAS RÁPIDAS -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    <!-- Tarjeta: Total Pacientes -->
-    <div class="card p-6 flex items-center space-x-4 animate-slide-down">
-      <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-br from-secondary-500 to-secondary-600 flex items-center justify-center text-white text-2xl shadow-lg">
-        👥
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    
+    <!-- HEADER CON SALUDO -->
+    <div class="text-center mb-12">
+      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full mb-6 shadow-lg animate-bounce">
+        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+        </svg>
       </div>
-      <div>
-        <h3 class="text-2xl font-semibold text-gray-800 dark:text-white">
-          {{ total_patients|default:"—" }}
+      <h1 class="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent mb-4">
+        ¡Hola, {{ user.first_name|default:user.username }}! 👋
+      </h1>
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+        Bienvenido a tu panel de control. Gestiona tus expedientes clínicos de forma 
+        <span class="font-semibold text-blue-600">segura</span> y 
+        <span class="font-semibold text-indigo-600">eficiente</span>.
+      </p>
+    </div>
+
+    <!-- ESTADÍSTICAS RÁPIDAS -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+      <!-- Total Pacientes -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="ml-6">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+              Total Pacientes
+            </p>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+              {{ total_patients|default:"0" }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expedientes del mes -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="ml-6">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+              Este Mes
+            </p>
+            <p class="text-3xl font-bold text-gray-900 dark:text-white">
+              {{ monthly_records|default:"0" }}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Estado del sistema -->
+      <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
+        <div class="flex items-center">
+          <div class="flex-shrink-0">
+            <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.031 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+            </div>
+          </div>
+          <div class="ml-6">
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+              Seguridad
+            </p>
+            <p class="text-xl font-bold text-green-600 dark:text-green-400 flex items-center">
+              <span class="w-3 h-3 bg-green-400 rounded-full mr-2 animate-pulse"></span>
+              Activa
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCIONES PRINCIPALES -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+      <!-- Crear nuevo expediente -->
+      <div class="group bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:border-blue-200 dark:hover:border-blue-700">
+        <div class="text-center">
+          <div class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+            Crear Nuevo Expediente
+          </h3>
+          <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+            Cifra y registra un expediente clínico de forma segura con encriptación de extremo a extremo.
+          </p>
+          <a
+            href="{% url 'create_record_form' %}"
+            class="inline-flex items-center justify-center w-full py-4 px-6 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-semibold rounded-2xl hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+            </svg>
+            Nuevo Expediente
+          </a>
+        </div>
+      </div>
+
+      <!-- Buscar expediente -->
+      <div class="group bg-white dark:bg-gray-800 rounded-3xl shadow-xl p-8 border border-gray-100 dark:border-gray-700 hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 hover:border-purple-200 dark:hover:border-purple-700">
+        <div class="text-center">
+          <div class="inline-flex items-center justify-center w-24 h-24 bg-gradient-to-r from-purple-500 to-pink-600 rounded-3xl mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
+            <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors">
+            Buscar Expediente
+          </h3>
+          <p class="text-gray-600 dark:text-gray-300 mb-8 leading-relaxed">
+            Descifra y recupera la información de un expediente ya registrado de manera rápida y segura.
+          </p>
+          <a
+            href="{% url 'read_record_form' %}"
+            class="inline-flex items-center justify-center w-full py-4 px-6 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-semibold rounded-2xl hover:from-purple-600 hover:to-pink-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
+          >
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            Buscar Expediente
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÚLTIMOS EXPEDIENTES -->
+    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
+      <div class="px-8 py-6 border-b border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-white flex items-center">
+            <svg class="w-6 h-6 mr-3 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            Últimos Expedientes Creados
+          </h2>
+          <span class="px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium">
+            Recientes
+          </span>
+        </div>
+      </div>
+
+      {% if recent_records %}
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th class="px-8 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                Paciente
+              </th>
+              <th class="px-8 py-4 text-left text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                Fecha de Creación
+              </th>
+              <th class="px-8 py-4 text-center text-xs font-bold text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                Acción
+              </th>
+            </tr>
+          </thead>
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            {% for rec in recent_records %}
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-200">
+              <td class="px-8 py-6 whitespace-nowrap">
+                <div class="flex items-center">
+                  <div class="flex-shrink-0 w-10 h-10 bg-gradient-to-r from-blue-400 to-blue-500 rounded-full flex items-center justify-center shadow-md">
+                    <span class="text-white font-bold text-sm">
+                      {{ rec.patient_name|first|upper }}
+                    </span>
+                  </div>
+                  <div class="ml-4">
+                    <div class="text-lg font-semibold text-gray-900 dark:text-white">
+                      {{ rec.patient_name }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td class="px-8 py-6 whitespace-nowrap">
+                <div class="text-sm text-gray-900 dark:text-white font-medium">
+                  {{ rec.timestamp|date:"d M Y" }}
+                </div>
+                <div class="text-sm text-gray-500 dark:text-gray-400">
+                  {{ rec.timestamp|date:"H:i" }}
+                </div>
+              </td>
+              <td class="px-8 py-6 text-center">
+                <form method="post" action="{% url 'read_record_form' %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="patient_name" value="{{ rec.patient_name }}">
+                  <button
+                    type="submit"
+                    class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-medium rounded-xl hover:from-emerald-600 hover:to-teal-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                  >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
+                    Ver Expediente
+                  </button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="px-8 py-12 text-center">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-gray-100 dark:bg-gray-700 rounded-full mb-6">
+          <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 dark:text-white mb-2">
+          No hay expedientes registrados
         </h3>
-        <p class="text-gray-500 dark:text-gray-400">
-          Pacientes registrados
+        <p class="text-gray-500 dark:text-gray-400 mb-6">
+          Comienza creando tu primer expediente clínico seguro.
         </p>
+        <a
+          href="{% url 'create_record_form' %}"
+          class="inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-xl hover:bg-blue-700 transition-colors duration-300"
+        >
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+          </svg>
+          Crear Primer Expediente
+        </a>
       </div>
+      {% endif %}
     </div>
 
-  <!-- SECCIÓN DE ACCIONES PRINCIPALES -->
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-    <!-- Tarjeta: Crear nuevo expediente -->
-    <div class="card p-8 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-200 animate-fade-in">
-      <div class="text-6xl mb-4 text-primary animate-pulse-soft">🗂️</div>
-      <h3 class="text-2xl font-semibold mb-2 text-gray-800 dark:text-white">
-        Crear nuevo expediente
-      </h3>
-      <p class="text-gray-500 dark:text-gray-400 mb-6">
-        Cifra y registra un expediente clínico de forma segura.
-      </p>
-      <a
-        href="{% url 'create_record_form' %}"
-        class="btn-primary w-full max-w-xs focus-ring"
-      >
-        Nuevo expediente
-      </a>
-    </div>
-
-    <!-- Tarjeta: Buscar expediente existente -->
-    <div class="card p-8 flex flex-col items-center text-center hover:shadow-xl transition-shadow duration-200 animate-fade-in delay-75">
-      <div class="text-6xl mb-4 text-secondary animate-pulse-soft">🔍</div>
-      <h3 class="text-2xl font-semibold mb-2 text-gray-800 dark:text-white">
-        Buscar expediente
-      </h3>
-      <p class="text-gray-500 dark:text-gray-400 mb-6">
-        Descifra y recupera la información de un expediente ya registrado.
-      </p>
-      <a
-        href="{% url 'read_record_form' %}"
-        class="btn-secondary w-full max-w-xs focus-ring"
-      >
-        Buscar expediente
-      </a>
-    </div>
   </div>
-
-  <!-- SECCIÓN DE ÚLTIMOS EXPEDIENTES -->
-  <div class="space-y-4 animate-fade-in delay-150">
-    <h2 class="text-3xl font-bold text-gray-800 dark:text-white">
-      Últimos expedientes creados
-    </h2>
-    {% if recent_records %}
-    <div class="overflow-x-auto border border-white/20 rounded-2xl shadow-soft bg-white/80 dark:bg-dark-800/80 animate-fade-in">
-      <table class="min-w-full">
-        <thead class="bg-gray-100 dark:bg-dark-800">
-          <tr>
-            <th class="px-6 py-3 text-left text-gray-700 dark:text-gray-300 font-medium">Paciente</th>
-            <th class="px-6 py-3 text-left text-gray-700 dark:text-gray-300 font-medium">Fecha de creación</th>
-            <th class="px-6 py-3 text-center text-gray-700 dark:text-gray-300 font-medium">Acción</th>
-          </tr>
-        </thead>
-        <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-          {% for rec in recent_records %}
-          <tr class="hover:bg-gray-50 dark:hover:bg-dark-700 transition-colors">
-            <td class="px-6 py-4 whitespace-nowrap text-gray-800 dark:text-gray-200">
-              {{ rec.patient_name }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-gray-600 dark:text-gray-400">
-              {{ rec.timestamp|date:"d M Y H:i" }}
-            </td>
-            <td class="px-6 py-4 text-center">
-              <form method="post" action="{% url 'read_record_form' %}">
-                {% csrf_token %}
-                <input type="hidden" name="patient_name" value="{{ rec.patient_name }}">
-                <button
-                  type="submit"
-                  class="flex items-center justify-center space-x-1 btn-accent focus-ring px-3 py-1"
-                >
-                  <span>Ver</span>
-                  <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </button>
-              </form>
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    {% else %}
-    <div class="card p-6 text-center bg-white/80 dark:bg-dark-800/80">
-      <p class="text-gray-500 dark:text-gray-400">
-        Aún no hay expedientes registrados. Haz clic en “Nuevo expediente” para comenzar.
-      </p>
-    </div>
-    {% endif %}
-  </div>
-
 </div>
+
+<!-- CSS PERSONALIZADO PARA ANIMACIONES -->
+<style>
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-fade-in-up-delay {
+  animation: fadeInUp 0.6s ease-out 0.2s both;
+}
+
+.animate-fade-in-up-delay-2 {
+  animation: fadeInUp 0.6s ease-out 0.4s both;
+}
+</style>
 {% endblock %}
