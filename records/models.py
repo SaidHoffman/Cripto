@@ -2,7 +2,7 @@
 from django.db import models
 
 class EncryptedRecord(models.Model):
-    patient_name = models.CharField(max_length=150, unique=True)  # antes: patient_id
+    patient_name = models.CharField(max_length=150, unique=True)
     ciphertext     = models.BinaryField()
     iv             = models.BinaryField()
     wrap_key       = models.BinaryField()
