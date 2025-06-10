@@ -205,6 +205,7 @@ def create_record_form(request):
         EncryptedRecord.objects.update_or_create(
             patient_name=patient_name,
             defaults={
+                'user': request.user,
                 'ciphertext': ciphertext,
                 'iv': iv,
                 'wrap_key': key,
