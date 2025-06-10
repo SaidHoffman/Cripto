@@ -1,21 +1,38 @@
 from django.http import JsonResponse
+from .utils.crypto import generate_ed25519_keypair, generate_x25519_keypair
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
-
-from .models import EncryptedRecord
-from .utils.crypto import encrypt_record_aes_cbc, decrypt_record_aes_cbc
-
+import io
+import zipfile
+from .models import EncryptedRecord, UserKeys
+from .utils.crypto import encrypt_record_aes_cbc, decrypt_record_aes_cbc, sign_record, extract_signature_and_plaintext, verify_signature 
+from django.utils import timezone
 import os
+
 
 
 @login_required
 def dashboard(request):
-    # Obtener los 5 expedientes más recientes (ordenados por timestamp descendente)
+    user = request.user 
     recent_records = EncryptedRecord.objects.order_by('-timestamp')[:5]
+    total_patients = EncryptedRecord.objects.count()
+    now = timezone.now()
+    monthly_records = EncryptedRecord.objects.filter(timestamp__month=now.month,timestamp__year=now.year).count()
+
+
+    has_keys = False
+    if hasattr(user, 'keys'):
+        if user.keys.public_signing_key and user.keys.public_encryption_key:
+            has_keys = True
+
     return render(request, 'records/dashboard.html', {
-        'recent_records': recent_records
+        'recent_records': recent_records,
+        'total_patients': total_patients,
+        'monthly_records': monthly_records,
+        'has_keys': has_keys,
     })
 
 def home(request):
@@ -63,7 +80,7 @@ def create_encrypted_record(request):
 def read_encrypted_record(request):
     """
     Endpoint API (curl/Postman) para descifrar un expediente:
-    Recibe patient_name y devuelve JSON con plaintext.
+    Recibe patient_name y devuelve JSON con plaintext y estado de la firma.
     """
     if request.method == 'POST':
         patient_name = request.POST.get('patient_name', '').strip()
@@ -72,19 +89,33 @@ def read_encrypted_record(request):
 
         try:
             record = EncryptedRecord.objects.get(patient_name=patient_name)
-            plaintext = decrypt_record_aes_cbc(
-                record.ciphertext, record.wrap_key, record.iv
-            )
+
+            # Desencriptar
+            signed_data = decrypt_record_aes_cbc(record.ciphertext, record.wrap_key, record.iv)
+
+            # Recuperar clave pública del usuario (asumimos que nombre único = dueño)
+            user_keys = UserKeys.objects.get(user__encryptedrecord=record)
+            public_key = user_keys.public_signing_key
+
+            # Verificar firma
+            is_valid = verify_signature(public_key, signed_data)
+            _, plaintext = extract_signature_and_plaintext(signed_data)
+
             return JsonResponse({
                 'patient_name': record.patient_name,
-                'plaintext'   : plaintext.decode(errors='ignore')
+                'plaintext': plaintext.decode(errors='ignore'),
+                'signature_valid': is_valid
             })
+
         except EncryptedRecord.DoesNotExist:
             return JsonResponse({'error': 'Record not found'}, status=404)
+        except UserKeys.DoesNotExist:
+            return JsonResponse({'error': 'Public key not found for this record'}, status=500)
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
 
     return JsonResponse({'error': 'Only POST allowed'}, status=405)
+
 
 
 @login_required
@@ -151,9 +182,24 @@ def create_record_form(request):
             f"4) Historial de Tratamientos:\n{treatment_block}\n"
         )
 
-        # Cifrar con AES-CBC
+        # 1) Leer clave privada del archivo .key
+        private_key_file = request.FILES.get('private_key_file')
+        if not private_key_file:
+            messages.error(request, "Debes subir tu clave privada para firmar.")
+            return redirect('create_record_form')
+
+        private_key_bytes = private_key_file.read()
+        if len(private_key_bytes) != 32:
+            messages.error(request, "La clave privada debe tener exactamente 32 bytes (Ed25519 en formato raw).")
+            return redirect('create_record_form')
+
+        # 2) Firmar el expediente
+        signed_data = sign_record(record_text.encode(), private_key_bytes)  # output: firma (64) + texto
+
+        # 3) Cifrar con AES-CBC
         key = os.urandom(32)
-        ciphertext, iv = encrypt_record_aes_cbc(record_text.encode(), key)
+        ciphertext, iv = encrypt_record_aes_cbc(signed_data, key)
+
 
         # Guardar o actualizar (patient_name es único en el modelo)
         EncryptedRecord.objects.update_or_create(
@@ -177,7 +223,7 @@ def create_record_form(request):
 def read_record_form(request):
     """
     GET:  Muestra el formulario para buscar por nombre de paciente.
-    POST: Busca el registro por patient_name, lo descifra y despliega.
+    POST: Busca el registro por patient_name, lo descifra, verifica la firma y despliega.
     """
     context = {}
     if request.method == 'POST':
@@ -188,20 +234,62 @@ def read_record_form(request):
 
         try:
             record = EncryptedRecord.objects.get(patient_name=patient_name)
-            plaintext = decrypt_record_aes_cbc(
-                record.ciphertext, record.wrap_key, record.iv
-            ).decode(errors='ignore')
+            signed_data = decrypt_record_aes_cbc(record.ciphertext, record.wrap_key, record.iv)
+            now = timezone.now()
+            # Recuperar clave pública del firmante
+            user_keys = UserKeys.objects.get(user__encryptedrecord=record)
+            public_key = user_keys.public_signing_key
+
+            # Verificar firma
+            is_valid = verify_signature(public_key, signed_data)
+            _, plaintext = extract_signature_and_plaintext(signed_data)
 
             context['found'] = True
+            context['now'] = timezone.now()
             context['record_data'] = {
                 'patient_name': record.patient_name,
-                'plaintext'   : plaintext
+                'plaintext': plaintext.decode(errors='ignore'),
+                'signature_valid': is_valid,
             }
+
         except EncryptedRecord.DoesNotExist:
             messages.error(request, f"No existe expediente para «{patient_name}».")
+            return redirect('read_record_form')
+        except UserKeys.DoesNotExist:
+            messages.error(request, "No se encontró clave pública para verificar la firma.")
             return redirect('read_record_form')
         except Exception as e:
             messages.error(request, f"Error al descifrar: {e}")
             return redirect('read_record_form')
 
     return render(request, 'records/read_record.html', context)
+
+@login_required
+def generate_keys(request):
+    user = request.user
+
+    if hasattr(user, 'keys') and user.keys.public_signing_key and user.keys.public_encryption_key:
+        return HttpResponse("Ya tienes claves generadas.", status=400)
+
+    # Llama funciones del módulo utils.crypto
+    ed_priv, ed_pub = generate_ed25519_keypair()
+    x_priv, x_pub = generate_x25519_keypair()
+
+    # Guardar públicas
+    user_keys, created = UserKeys.objects.get_or_create(user=user)
+    user_keys.public_signing_key = ed_pub
+    user_keys.public_encryption_key = x_pub
+    user_keys.save()
+
+    # Preparar archivo .zip
+    zip_buffer = io.BytesIO()
+    with zipfile.ZipFile(zip_buffer, "w") as zip_file:
+        zip_file.writestr("clave_privada_firma_ed25519.key", ed_priv)
+        zip_file.writestr("clave_publica_firma_ed25519.key", ed_pub)
+        zip_file.writestr("clave_privada_cifrado_x25519.key", x_priv)
+        zip_file.writestr("clave_publica_cifrado_x25519.key", x_pub)
+
+    zip_buffer.seek(0)
+    response = HttpResponse(zip_buffer, content_type="application/zip")
+    response['Content-Disposition'] = f'attachment; filename=claves_{user.username}.zip'
+    return response

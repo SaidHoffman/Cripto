@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xzm2_&0q^#h7glx@!7qjs*vd)phr*1071c*=bg0o4t*xod=ja_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 LOGIN_REDIRECT_URL = '/records/dashboard/'
@@ -123,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Mexico_City'
 
 USE_I18N = True
 
@@ -139,3 +139,13 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False  # Importante: no usar SSL y TLS al mismo tiempo
+EMAIL_HOST_USER = 'saidsigala16@gmail.com'
+EMAIL_HOST_PASSWORD = 'dxqa uiat ripe dbnu'  # Verifica que esta sea tu contraseña de aplicación
+DEFAULT_FROM_EMAIL = 'saidsigala16@gmail.com'  # Simplifica el formato
+SERVER_EMAIL = 'saidsigala16@gmail.com'
