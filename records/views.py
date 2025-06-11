@@ -200,7 +200,7 @@ def create_record_form(request):
         ciphertext, iv = encrypt_record_aes_cbc(signed_data, key)
         try:
             dentist_a = User.objects.get(id=1) 
-            dentist_b = User.objects.get(id=2) 
+            dentist_b = User.objects.get(id=5) 
             pub_a = dentist_a.keys.public_encryption_key
             pub_b = dentist_b.keys.public_encryption_key
         except (User.DoesNotExist, UserKeys.DoesNotExist):
@@ -263,7 +263,7 @@ def read_record_form(request):
                 wrap_key = record.wrap_key
                 sender_pub = record.sender_pub_a
                 nonce = record.nonce_a
-            elif user.id == 2:  
+            elif user.id == 5:  
                 wrap_key = record.wrap_key_b
                 sender_pub = record.sender_pub_b
                 nonce = record.nonce_b
@@ -329,4 +329,6 @@ def generate_keys(request):
     zip_buffer.seek(0)
     response = HttpResponse(zip_buffer, content_type="application/zip")
     response['Content-Disposition'] = f'attachment; filename=claves_{user.username}.zip'
+    #actulizar pagina
+    
     return response
