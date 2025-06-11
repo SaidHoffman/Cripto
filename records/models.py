@@ -8,7 +8,15 @@ class EncryptedRecord(models.Model):
     ciphertext     = models.BinaryField()
     iv             = models.BinaryField()
     wrap_key       = models.BinaryField(help_text="Clave simétrica cifrada para el dentista A")
-    wrap_key_b     = models.BinaryField(help_text="Clave simétrica cifrada para el dentista B")  
+    sender_pub_a    = models.BinaryField(help_text="Clave pública efímera del emisor para A", null=True, blank=True)
+    nonce_a         = models.BinaryField(help_text="Nonce para AES-GCM con el dentista A", null=True, blank=True)
+
+    wrap_key_b     = models.BinaryField(help_text="Clave simétrica cifrada para el dentista B")
+    sender_pub_b    = models.BinaryField(help_text="Clave pública efímera del emisor para B", null=True, blank=True)
+    nonce_b         = models.BinaryField(help_text="Nonce para AES-GCM con el dentista B", null=True, blank=True)
+
+
+
     timestamp      = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

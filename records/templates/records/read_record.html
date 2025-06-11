@@ -74,7 +74,7 @@
 
       <!-- FORMULARIO DE BÚSQUEDA -->
       <div class="p-8">
-        <form method="post" class="space-y-6 needs-validation" novalidate>
+        <form method="post" enctype="multipart/form-data" class="space-y-6 needs-validation" novalidate>
           {% csrf_token %}
           
           <div class="relative">
@@ -117,6 +117,47 @@
               </span>
             </p>
           </div>
+
+          <!-- SUBIDA DE CLAVE PRIVADA -->
+          <div class="relative">
+            <label for="private_key_file" class="block text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              <span class="flex items-center">
+                <svg class="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 16.5 8.5 14 2.257 7.743A6 6 0 0111 2.257L12 3l1-0.757A6 6 0 0121.743 7.743L16 12h-1" />
+                </svg>
+                Clave Privada de Cifrado (X25519)
+                <span class="text-red-500 ml-1">*</span>
+              </span>
+            </label>
+            
+            <div class="relative">
+              <input
+                type="file"
+                name="private_key_file"
+                id="private_key_file"
+                accept=".key,.pem"
+                required
+                class="w-full px-6 py-4 text-lg border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-2xl
+                      bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 
+                      focus:outline-none focus:ring-4 focus:ring-purple-200 dark:focus:ring-purple-800 
+                      focus:border-purple-500 dark:focus:border-purple-400
+                      transition-all duration-300 hover:border-purple-300 dark:hover:border-purple-500
+                      hover:bg-purple-50 dark:hover:bg-gray-600
+                      file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
+                      file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700
+                      hover:file:bg-purple-100"
+              >
+              
+              <!-- Texto de ayuda -->
+              <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
+                </svg>
+                Formatos soportados: .key, .pem | Tamaño máximo: 2MB
+              </p>
+            </div>
+          </div>
+
 
           <!-- BOTÓN DE BÚSQUEDA -->
           <div class="pt-6">

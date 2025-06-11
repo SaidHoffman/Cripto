@@ -7,8 +7,9 @@ from django.contrib import messages
 from django.views.decorators.csrf import csrf_exempt
 import io
 import zipfile
+from django.contrib.auth.models import User
 from .models import EncryptedRecord, UserKeys
-from .utils.crypto import encrypt_record_aes_cbc, decrypt_record_aes_cbc, sign_record, extract_signature_and_plaintext, verify_signature 
+from .utils.crypto import encrypt_record_aes_cbc, decrypt_record_aes_cbc, sign_record, extract_signature_and_plaintext, verify_signature, unwrap_aes_key_with_x25519, wrap_aes_key_with_x25519
 from django.utils import timezone
 import os
 
@@ -193,22 +194,35 @@ def create_record_form(request):
             messages.error(request, "La clave privada debe tener exactamente 32 bytes (Ed25519 en formato raw).")
             return redirect('create_record_form')
 
-        # 2) Firmar el expediente
-        signed_data = sign_record(record_text.encode(), private_key_bytes)  # output: firma (64) + texto
-
-        # 3) Cifrar con AES-CBC
+        signed_data = sign_record(record_text.encode(), private_key_bytes)
+ 
         key = os.urandom(32)
         ciphertext, iv = encrypt_record_aes_cbc(signed_data, key)
+        try:
+            dentist_a = User.objects.get(id=1) 
+            dentist_b = User.objects.get(id=2) 
+            pub_a = dentist_a.keys.public_encryption_key
+            pub_b = dentist_b.keys.public_encryption_key
+        except (User.DoesNotExist, UserKeys.DoesNotExist):
+            messages.error(request, "Faltan las claves públicas X25519 de dentista_a o dentista_b.")
+            return redirect('create_record_form')
 
 
-        # Guardar o actualizar (patient_name es único en el modelo)
+        sender_pub_a, nonce_a, wrap_key_a = wrap_aes_key_with_x25519(pub_a, key)
+        sender_pub_b, nonce_b, wrap_key_b = wrap_aes_key_with_x25519(pub_b, key)
+
         EncryptedRecord.objects.update_or_create(
             patient_name=patient_name,
             defaults={
                 'user': request.user,
                 'ciphertext': ciphertext,
                 'iv': iv,
-                'wrap_key': key,
+                'wrap_key': wrap_key_a,
+                'sender_pub_a': sender_pub_a,
+                'nonce_a': nonce_a,
+                'wrap_key_b': wrap_key_b,
+                'sender_pub_b': sender_pub_b,
+                'nonce_b': nonce_b
             }
         )
 
@@ -220,28 +234,49 @@ def create_record_form(request):
 
 
 
+from .utils.crypto import unwrap_aes_key_with_x25519
+
 @login_required
 def read_record_form(request):
-    """
-    GET:  Muestra el formulario para buscar por nombre de paciente.
-    POST: Busca el registro por patient_name, lo descifra, verifica la firma y despliega.
-    """
     context = {}
     if request.method == 'POST':
         patient_name = request.POST.get('patient_name', '').strip()
+        private_key_file = request.FILES.get('private_key_file')
+
         if not patient_name:
             messages.error(request, "El nombre del paciente es obligatorio.")
             return redirect('read_record_form')
 
+        if not private_key_file:
+            messages.error(request, "Debes subir tu clave privada de cifrado (X25519).")
+            return redirect('read_record_form')
+
+        private_key_bytes = private_key_file.read()
+        if len(private_key_bytes) != 32:
+            messages.error(request, "La clave privada debe tener 32 bytes (formato raw).")
+            return redirect('read_record_form')
+
         try:
             record = EncryptedRecord.objects.get(patient_name=patient_name)
-            signed_data = decrypt_record_aes_cbc(record.ciphertext, record.wrap_key, record.iv)
-            now = timezone.now()
-            # Recuperar clave pública del firmante
+            user = request.user
+            if user.id == 1: 
+                wrap_key = record.wrap_key
+                sender_pub = record.sender_pub_a
+                nonce = record.nonce_a
+            elif user.id == 2:  
+                wrap_key = record.wrap_key_b
+                sender_pub = record.sender_pub_b
+                nonce = record.nonce_b
+            else:
+                messages.error(request, "No tienes permiso para ver este expediente.")
+                return redirect('read_record_form')
+
+            aes_key = unwrap_aes_key_with_x25519(private_key_bytes, sender_pub, nonce, wrap_key)
+
+            signed_data = decrypt_record_aes_cbc(record.ciphertext, aes_key, record.iv)
+
             user_keys = UserKeys.objects.get(user__encryptedrecord=record)
             public_key = user_keys.public_signing_key
-
-            # Verificar firma
             is_valid = verify_signature(public_key, signed_data)
             _, plaintext = extract_signature_and_plaintext(signed_data)
 
@@ -264,6 +299,7 @@ def read_record_form(request):
             return redirect('read_record_form')
 
     return render(request, 'records/read_record.html', context)
+
 
 @login_required
 def generate_keys(request):
