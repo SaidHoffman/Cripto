@@ -39,14 +39,23 @@ CSRF_TRUSTED_ORIGINS = [
     'https://gestordental-a3anfwdygraqerc7.mexicocentral-01.azurewebsites.net'
 ]
 
-# Configuración de cookies seguras para producción
-# Solo usar cookies seguras en HTTPS (producción)
+# Configuración de producción para Azure
+# Azure maneja HTTPS automáticamente, no forzar redirección desde Django
 import os
 IS_PRODUCTION = os.environ.get('WEBSITE_HOSTNAME') is not None
 
+# Configuraciones de cookies y SSL para Azure
 SESSION_COOKIE_SECURE = IS_PRODUCTION
 CSRF_COOKIE_SECURE = IS_PRODUCTION
-SECURE_SSL_REDIRECT = IS_PRODUCTION
+SECURE_SSL_REDIRECT = False  # Azure maneja esto automáticamente
+
+# Configuraciones específicas para Azure App Service
+if IS_PRODUCTION:
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    USE_X_FORWARDED_HOST = True
+    USE_X_FORWARDED_PORT = True
+    # Asegurar que las redirecciones usen HTTPS
+    SECURE_REDIRECT_EXEMPT = []
 
 
 # Application definition
@@ -70,6 +79,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# Configuraciones para evitar redirecciones problemáticas
+APPEND_SLASH = True
+PREPEND_WWW = False
 
 ROOT_URLCONF = 'dental_project.urls'
 
@@ -161,13 +174,14 @@ EMAIL_HOST_PASSWORD = 'dxqa uiat ripe dbnu'  # Verifica que esta sea tu contrase
 DEFAULT_FROM_EMAIL = 'saidsigala16@gmail.com'  # Simplifica el formato
 SERVER_EMAIL = 'saidsigala16@gmail.com'
 
-# Configuraciones de seguridad para producción
+# Configuraciones de seguridad para producción - Optimizado para Azure
 SECURE_BROWSER_XSS_FILTER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 X_FRAME_OPTIONS = 'DENY'
-SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+# HSTS configurado para Azure
+SECURE_HSTS_SECONDS = 31536000 if IS_PRODUCTION else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = IS_PRODUCTION
+SECURE_HSTS_PRELOAD = IS_PRODUCTION
 
 # Configuración de logging para producción
 LOGGING = {
