@@ -7,6 +7,7 @@ from .views import (
     create_encrypted_record,
     read_encrypted_record,
     generate_keys,
+    user_settings,
 )
 
 urlpatterns = [
@@ -16,6 +17,7 @@ urlpatterns = [
     path('create/',               create_encrypted_record, name='create_encrypted_record'),
     path('read/',                 read_encrypted_record,   name='read_encrypted_record'),
     path('generate-keys/',        generate_keys,        name='generate_keys'),
+    path('settings/',             user_settings,        name='user_settings'),
 
     path('password_reset/', auth_views.PasswordResetView.as_view(template_name='registration/password_reset_form.html'), name='password_reset'),
     path('password_reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='registration/password_reset_done.html'), name='password_reset_done'),

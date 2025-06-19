@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-xzm2_&0q^#h7glx@!7qjs*vd)phr*1071c*=bg0o4t*xod=ja_'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 LOGIN_REDIRECT_URL = '/records/dashboard/'
@@ -39,8 +39,14 @@ CSRF_TRUSTED_ORIGINS = [
     'https://gestordental-a3anfwdygraqerc7.mexicocentral-01.azurewebsites.net'
 ]
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE    = True
+# Configuración de cookies seguras para producción
+# Solo usar cookies seguras en HTTPS (producción)
+import os
+IS_PRODUCTION = os.environ.get('WEBSITE_HOSTNAME') is not None
+
+SESSION_COOKIE_SECURE = IS_PRODUCTION
+CSRF_COOKIE_SECURE = IS_PRODUCTION
+SECURE_SSL_REDIRECT = IS_PRODUCTION
 
 
 # Application definition
@@ -134,6 +140,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Media files
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
@@ -149,3 +160,31 @@ EMAIL_HOST_USER = 'saidsigala16@gmail.com'
 EMAIL_HOST_PASSWORD = 'dxqa uiat ripe dbnu'  # Verifica que esta sea tu contraseña de aplicación
 DEFAULT_FROM_EMAIL = 'saidsigala16@gmail.com'  # Simplifica el formato
 SERVER_EMAIL = 'saidsigala16@gmail.com'
+
+# Configuraciones de seguridad para producción
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = 'DENY'
+SECURE_HSTS_SECONDS = 31536000 if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
+
+# Configuración de logging para producción
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'ERROR',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'django_errors.log'),
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    },
+}

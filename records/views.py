@@ -200,7 +200,7 @@ def create_record_form(request):
         ciphertext, iv = encrypt_record_aes_cbc(signed_data, key)
         try:
             dentist_a = User.objects.get(id=1) 
-            dentist_b = User.objects.get(id=5) 
+            dentist_b = User.objects.get(id=6) 
             pub_a = dentist_a.keys.public_encryption_key
             pub_b = dentist_b.keys.public_encryption_key
         except (User.DoesNotExist, UserKeys.DoesNotExist):
@@ -263,7 +263,7 @@ def read_record_form(request):
                 wrap_key = record.wrap_key
                 sender_pub = record.sender_pub_a
                 nonce = record.nonce_a
-            elif user.id == 5:  
+            elif user.id == 6:  
                 wrap_key = record.wrap_key_b
                 sender_pub = record.sender_pub_b
                 nonce = record.nonce_b
@@ -332,3 +332,39 @@ def generate_keys(request):
     #actulizar pagina
     
     return response
+
+@login_required
+def user_settings(request):
+    """
+    Vista para la configuración del usuario
+    """
+    user = request.user
+    
+    if request.method == 'POST':
+        action = request.POST.get('action')
+        
+        if action == 'update_profile':
+            # Actualizar información del perfil
+            first_name = request.POST.get('first_name', '').strip()
+            last_name = request.POST.get('last_name', '').strip()
+            email = request.POST.get('email', '').strip()
+            
+            user.first_name = first_name
+            user.last_name = last_name
+            user.email = email
+            user.save()
+            
+            messages.success(request, 'Perfil actualizado correctamente.')
+            return redirect('user_settings')
+    
+    # Verificar si el usuario tiene claves
+    has_keys = False
+    if hasattr(user, 'keys'):
+        if user.keys.public_signing_key and user.keys.public_encryption_key:
+            has_keys = True
+    
+    context = {
+        'has_keys': has_keys,
+    }
+    
+    return render(request, 'records/user_settings.html', context)

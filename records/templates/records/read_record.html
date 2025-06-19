@@ -2,85 +2,77 @@
 {% block title %}Buscar Expediente – Expedientes Seguros{% endblock %}
 
 {% block content %}
-<!-- CONTENEDOR PRINCIPAL CON GRADIENTE -->
-<div class="min-h-screen bg-gradient-to-br from-purple-50 via-white to-pink-50 dark:from-gray-900 dark:via-gray-800 dark:to-purple-900">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     
-    <!-- HEADER CON ANIMACIÓN -->
-    <div class="text-center mb-12 animate-fade-in-up">
-      <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full mb-6 shadow-lg animate-bounce">
-        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <!-- HEADER CON SALUDO - COMPACTO -->
+    <div class="text-center mb-8">
+      <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-full mb-4 shadow-lg animate-bounce">
+        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
         </svg>
       </div>
-      <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-4">
-        Buscar Expediente 🔍
+      <h1 class="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-3">
+        Buscar Expediente
       </h1>
-      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
-        Encuentra y descifra expedientes clínicos de forma <span class="font-semibold text-purple-600">segura</span> 
-        y <span class="font-semibold text-pink-600">rápida</span>
+      <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+        Encuentra y descifra expedientes clínicos de forma 
+        <span class="font-semibold text-purple-600">segura</span> y 
+        <span class="font-semibold text-pink-600">rápida</span>
       </p>
     </div>
 
-    <!-- MENSAJES DE ESTADO -->
+    <!-- MENSAJES -->
     {% if messages %}
-      <div class="mb-8 animate-fade-in-up-delay">
-        {% for message in messages %}
-          <div class="mb-4 p-4 rounded-2xl shadow-lg border-l-4 animate-pulse
-                     {% if message.tags == 'success' %}bg-green-50 dark:bg-green-900/20 border-green-400 text-green-800 dark:text-green-200{% endif %}
-                     {% if message.tags == 'error' %}bg-red-50 dark:bg-red-900/20 border-red-400 text-red-800 dark:text-red-200{% endif %}
-                     {% if message.tags == 'warning' %}bg-yellow-50 dark:bg-yellow-900/20 border-yellow-400 text-yellow-800 dark:text-yellow-200{% endif %}">
-            <div class="flex items-center">
-              <div class="flex-shrink-0">
-                {% if message.tags == 'success' %}
-                  <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                {% elif message.tags == 'error' %}
-                  <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                {% else %}
-                  <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                  </svg>
-                {% endif %}
-              </div>
-              <div class="ml-3">
-                <p class="font-medium">{{ message }}</p>
-              </div>
-            </div>
+    <div class="mb-8">
+      {% for message in messages %}
+      <div class="mb-4 bg-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}yellow{% endif %}-50 dark:bg-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}yellow{% endif %}-900/20 border border-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}yellow{% endif %}-200 dark:border-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}yellow{% endif %}-800 rounded-xl p-4">
+        <div class="flex items-center">
+          <div class="flex-shrink-0 w-10 h-10 bg-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}yellow{% endif %}-100 dark:bg-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}yellow{% endif %}-800 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}yellow{% endif %}-600 dark:text-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}yellow{% endif %}-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              {% if message.tags == 'success' %}
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0114 0z"></path>
+              {% elif message.tags == 'error' %}
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              {% else %}
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              {% endif %}
+            </svg>
           </div>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    <!-- TARJETA PRINCIPAL DE BÚSQUEDA -->
-    <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden mb-8 animate-fade-in-up-delay">
-      
-      <!-- ENCABEZADO DE LA TARJETA -->
-      <div class="px-8 py-6 bg-gradient-to-r from-purple-500 to-pink-600">
-        <div class="flex items-center justify-center">
-          <div class="text-center">
-            <h2 class="text-2xl font-bold text-white mb-2">
-              Localizar Expediente Médico
-            </h2>
-            <p class="text-purple-100">
-              Ingresa el nombre completo del paciente para recuperar su información
+          <div class="ml-4">
+            <p class="text-sm font-medium text-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}yellow{% endif %}-800 dark:text-{% if message.tags == 'success' %}green{% elif message.tags == 'error' %}red{% else %}yellow{% endif %}-300">
+              {{ message }}
             </p>
           </div>
         </div>
       </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
-      <!-- FORMULARIO DE BÚSQUEDA -->
-      <div class="p-8">
-        <form method="post" enctype="multipart/form-data" class="space-y-6 needs-validation" novalidate>
+    <!-- TARJETA PRINCIPAL DEL FORMULARIO - COMPACTA -->
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden mb-6">
+      <div class="px-6 py-4 bg-gradient-to-r from-purple-500 to-pink-600">
+        <div class="text-center">
+          <h2 class="text-xl font-bold text-white mb-1">
+            Buscar Expediente Médico
+          </h2>
+          <p class="text-purple-100 text-sm">
+            Ingresa el nombre completo del paciente para recuperar su información
+          </p>
+        </div>
+      </div>
+
+      <div class="p-6">
+        <form method="post" enctype="multipart/form-data" class="space-y-5 needs-validation" novalidate>
           {% csrf_token %}
           
-          <div class="relative">
-            <label for="patient_name" class="block text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">
+          <!-- NOMBRE DEL PACIENTE -->
+          <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+            <label for="patient_name" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
               <span class="flex items-center">
-                <svg class="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-4 h-4 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                 </svg>
                 Nombre del Paciente
@@ -93,37 +85,33 @@
                 type="text"
                 name="patient_name"
                 id="patient_name"
-                class="w-full px-6 py-4 text-lg border-2 border-gray-300 dark:border-gray-600 rounded-2xl
-                       bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 
-                       focus:outline-none focus:ring-4 focus:ring-purple-200 dark:focus:ring-purple-800 
-                       focus:border-purple-500 dark:focus:border-purple-400
-                       transition-all duration-300 hover:border-purple-300 dark:hover:border-purple-500"
+                class="w-full px-4 py-2.5 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:ring-3 focus:ring-purple-200 dark:focus:ring-purple-800 focus:border-purple-500 dark:focus:border-purple-400 transition-all duration-300"
                 placeholder="Ej. Dr. Juan Carlos Pérez González"
                 required
               >
-              <div class="absolute inset-y-0 right-0 pr-6 flex items-center pointer-events-none">
-                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
               </div>
             </div>
             
-            <p class="mt-2 text-sm text-red-500 hidden transition-opacity duration-300">
+            <div class="mt-1.5 text-xs text-red-500 hidden error-message">
               <span class="flex items-center">
-                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
                 Por favor ingresa el nombre completo del paciente
               </span>
-            </p>
+            </div>
           </div>
 
-          <!-- SUBIDA DE CLAVE PRIVADA -->
-          <div class="relative">
-            <label for="private_key_file" class="block text-lg font-semibold text-gray-700 dark:text-gray-300 mb-3">
+          <!-- CLAVE PRIVADA -->
+          <div class="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4">
+            <label for="private_key_file" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
               <span class="flex items-center">
-                <svg class="w-5 h-5 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 16.5 8.5 14 2.257 7.743A6 6 0 0111 2.257L12 3l1-0.757A6 6 0 0121.743 7.743L16 12h-1" />
+                <svg class="w-4 h-4 mr-2 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"></path>
                 </svg>
                 Clave Privada de Cifrado (X25519)
                 <span class="text-red-500 ml-1">*</span>
@@ -137,45 +125,28 @@
                 id="private_key_file"
                 accept=".key,.pem"
                 required
-                class="w-full px-6 py-4 text-lg border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-2xl
-                      bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100 
-                      focus:outline-none focus:ring-4 focus:ring-purple-200 dark:focus:ring-purple-800 
-                      focus:border-purple-500 dark:focus:border-purple-400
-                      transition-all duration-300 hover:border-purple-300 dark:hover:border-purple-500
-                      hover:bg-purple-50 dark:hover:bg-gray-600
-                      file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0
-                      file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700
-                      hover:file:bg-purple-100"
+                class="block w-full text-sm text-gray-900 dark:text-gray-100 border-2 border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer bg-white dark:bg-gray-700 file:mr-3 file:py-2 file:px-3 file:rounded-l-lg file:border-0 file:text-xs file:font-semibold file:bg-purple-50 dark:file:bg-purple-900/50 file:text-purple-700 dark:file:text-purple-300 hover:file:bg-purple-100 dark:hover:file:bg-purple-900/70 focus:outline-none focus:ring-3 focus:ring-purple-200 dark:focus:ring-purple-800 focus:border-purple-500 dark:focus:border-purple-400 transition-all duration-300"
               >
-              
-              <!-- Texto de ayuda -->
-              <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                <svg class="inline w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd" />
-                </svg>
-                Formatos soportados: .key, .pem | Tamaño máximo: 2MB
-              </p>
             </div>
+            
+            <p class="mt-2 text-xs text-gray-600 dark:text-gray-400 flex items-center">
+              <svg class="w-3 h-3 mr-1 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              Formatos: .key, .pem | Máx: 2MB
+            </p>
           </div>
 
-
           <!-- BOTÓN DE BÚSQUEDA -->
-          <div class="pt-6">
+          <div class="pt-4">
             <button
               type="submit"
-              class="group w-full bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 
-                     text-white text-xl font-bold px-8 py-5 rounded-2xl 
-                     focus:outline-none focus:ring-4 focus:ring-purple-200 dark:focus:ring-purple-800
-                     transition-all duration-300 transform hover:scale-105 hover:shadow-2xl
-                     flex items-center justify-center space-x-3"
+              class="w-full inline-flex justify-center items-center px-6 py-3 bg-gradient-to-r from-purple-500 to-pink-600 hover:from-purple-600 hover:to-pink-700 text-white font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
             >
-              <svg class="w-6 h-6 transition-transform duration-300 group-hover:rotate-12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
               </svg>
-              <span>Buscar y Descifrar Expediente</span>
-              <svg class="w-6 h-6 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-              </svg>
+              Buscar y Descifrar Expediente
             </button>
           </div>
         </form>
@@ -296,65 +267,89 @@
           </div>
         </div>
 
-        <!-- CONTENIDO DEL EXPEDIENTE -->
-        <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-100 dark:border-gray-700 overflow-hidden">
-          <div class="px-8 py-6 bg-gradient-to-r from-blue-500 to-indigo-600">
-            <div class="flex items-center justify-between">
-              <h3 class="text-2xl font-bold text-white flex items-center">
-                <svg class="w-7 h-7 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                </svg>
-                Expediente Clínico Completo
-              </h3>
-              <div class="flex items-center space-x-2">
-                <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                <span class="text-blue-100 font-medium">{{ record_data.patient_name }}</span>
-              </div>
-            </div>
-          </div>
+        <!-- CONTENIDO DEL EXPEDIENTE - SIN HEADER AZUL -->
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-xl border border-gray-100 dark:border-gray-700 overflow-hidden">
           
-          <div class="p-8">
-            <div class="bg-gray-50 dark:bg-gray-700 rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-600">
-              <pre class="whitespace-pre-wrap text-gray-900 dark:text-gray-100 leading-relaxed font-mono text-sm overflow-x-auto">{{ record_data.plaintext }}</pre>
-            </div>
-          </div>
-          
-          <!-- ACCIONES DEL EXPEDIENTE -->
-          <div class="px-8 pb-8">
-            <div class="flex flex-col sm:flex-row gap-4">
-              <button
-                onclick="window.print()"
-                class="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
-                </svg>
-                <span>Imprimir Expediente</span>
-              </button>
+          <div class="p-6">
+            <!-- Contenedor del expediente con diseño moderno -->
+            <div class="bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 rounded-xl border-2 border-gray-200 dark:border-gray-600 overflow-hidden">
               
-              <button
-                onclick="copyToClipboard()"
-                class="flex-1 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-              >
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                </svg>
-                <span>Copiar Texto</span>
-              </button>
+              <!-- Barra de herramientas simplificada -->
+              <div class="bg-white dark:bg-gray-800 px-4 py-3 border-b border-gray-200 dark:border-gray-600 flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                  <div class="flex space-x-1">
+                    <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                    <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                  </div>
+                  <span class="text-sm font-medium text-gray-700 dark:text-gray-300">expediente_{{ record_data.patient_name|slugify }}.pdf</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <span class="px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-md text-xs font-medium">
+                    Formato PDF Profesional
+                  </span>
+                </div>
+              </div>
+
+              <!-- Contenido del expediente -->
+              <div id="expediente-content" class="relative">
+                <div class="p-4 max-h-none overflow-y-auto" id="content-container">
+                  <!-- Contenido con formato visual mejorado - MOSTRAR COMPLETO -->
+                  <div id="expediente-formatted" class="">
+                    <!-- Este contenido se generará con JavaScript -->
+                  </div>
+                  
+                  <!-- Contenido original (texto plano) - OCULTO POR DEFECTO -->
+                  <div id="expediente-text" class="hidden text-gray-900 dark:text-gray-100 leading-relaxed font-mono text-sm whitespace-pre-wrap break-words">{{ record_data.plaintext }}</div>
+                </div>
+                
+                <!-- Overlay de carga (opcional) -->
+                <div id="loading-overlay" class="absolute inset-0 bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-90 hidden items-center justify-center">
+                  <div class="text-center">
+                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">Procesando...</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Información adicional compacta -->
+              <div class="bg-gray-100 dark:bg-gray-900 px-4 py-2 border-t border-gray-200 dark:border-gray-600">
+                <div class="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
+                  <div class="flex items-center space-x-4">
+                    <span class="flex items-center">
+                      <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                      </svg>
+                      <span id="char-count">{{ record_data.plaintext|length }}</span> caracteres
+                    </span>
+                    <span class="flex items-center">
+                      <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                      </svg>
+                      Descifrado: {{ now|date:"d/m/Y H:i" }}
+                    </span>
+                  </div>
+                  <div class="flex items-center space-x-2">
+                    <span class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-full text-xs font-medium">
+                      Descifrado
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     {% endif %}
 
-    <!-- NAVEGACIÓN INFERIOR -->
-    <div class="text-center pt-8 animate-fade-in-up-delay-2">
-      <div class="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+    <!-- NAVEGACIÓN INFERIOR - COMPACTA -->
+    <div class="text-center pt-6 animate-fade-in-up-delay-2">
+      <div class="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4">
         <a
           href="{% url 'dashboard' %}"
-          class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 space-x-2"
+          class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 space-x-2"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
           </svg>
           <span>Volver al Dashboard</span>
@@ -362,9 +357,9 @@
         
         <a
           href="{% url 'create_record_form' %}"
-          class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 space-x-2"
+          class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 space-x-2"
         >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
           </svg>
           <span>Crear Nuevo Expediente</span>
@@ -375,7 +370,7 @@
   </div>
 </div>
 
-<!-- JAVASCRIPT MEJORADO -->
+<!-- JAVASCRIPT MEJORADO CON NUEVAS FUNCIONES -->
 <script>
 (function () {
   'use strict';
@@ -390,12 +385,12 @@
 
       // Validar campo de nombre
       if (!input.value.trim()) {
-        input.classList.add('border-red-500', 'ring-4', 'ring-red-200');
+        input.classList.add('border-red-500', 'ring-3', 'ring-red-200');
         input.classList.remove('border-gray-300', 'focus:border-purple-500');
         errorMsg.classList.remove('hidden');
         valid = false;
       } else {
-        input.classList.remove('border-red-500', 'ring-4', 'ring-red-200');
+        input.classList.remove('border-red-500', 'ring-3', 'ring-red-200');
         input.classList.add('border-gray-300');
         errorMsg.classList.add('hidden');
       }
@@ -417,57 +412,485 @@
   }
 })();
 
-// Función para copiar al portapapeles
-function copyToClipboard() {
-  const expedienteText = document.querySelector('pre').textContent;
-  
-  if (navigator.clipboard && window.isSecureContext) {
-    navigator.clipboard.writeText(expedienteText).then(() => {
-      showNotification('Expediente copiado al portapapeles', 'success');
-    }).catch(() => {
-      fallbackCopyTextToClipboard(expedienteText);
-    });
-  } else {
-    fallbackCopyTextToClipboard(expedienteText);
+// Inicializar el formato PDF al cargar la página
+document.addEventListener('DOMContentLoaded', function() {
+  // Verificar si hay contenido del expediente
+  if (document.querySelector('#expediente-text')) {
+    // Formatear automáticamente al cargar
+    setTimeout(() => {
+      formatExpedienteContent();
+      showNotification('Expediente cargado en formato PDF profesional', 'success');
+    }, 500);
   }
+});
+
+// Función para formatear visualmente el contenido del expediente - ESTILO PDF PROFESIONAL
+function formatExpedienteContent() {
+  const originalText = document.querySelector('#expediente-text').textContent;
+  const formattedElement = document.querySelector('#expediente-formatted');
+  
+  // Dividir el texto en líneas
+  const lines = originalText.split('\n');
+  let formattedHTML = `
+    <!-- ENCABEZADO PROFESIONAL TIPO PDF - COMPACTO -->
+    <div class="bg-white dark:bg-gray-800 mb-4 p-4 border-b border-gray-300 dark:border-gray-600">
+      <div class="flex items-center justify-between mb-3">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-700 rounded-lg flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+          <div>
+            <h1 class="text-lg font-bold text-gray-800 dark:text-gray-200">EXPEDIENTE CLÍNICO</h1>
+            <p class="text-xs text-gray-600 dark:text-gray-400">Sistema de Gestión Médica</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">FECHA</div>
+          <div class="text-xs font-semibold text-gray-700 dark:text-gray-300">${new Date().toLocaleDateString('es-ES')}</div>
+        </div>
+      </div>
+      
+      <!-- Información del paciente -->
+      <div class="bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg">
+        <div class="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">PACIENTE</div>
+        <div class="text-base font-bold text-gray-800 dark:text-gray-200">${escapeHtml('{{ record_data.patient_name }}')}</div>
+      </div>
+    </div>
+    
+    <!-- CONTENIDO DEL DOCUMENTO -->
+    <div class="space-y-3">
+  `;
+  
+  let currentSection = '';
+  let sectionContent = [];
+  let specialFields = {
+    alergias: [],
+    enfermedades: []
+  };
+  
+  lines.forEach((line, index) => {
+    const trimmedLine = line.trim();
+    
+    if (!trimmedLine) {
+      return; // Ignorar líneas vacías temporalmente
+    }
+    
+    // Detectar campos especiales que deben tener su propia sección
+    if (isFieldLine(trimmedLine)) {
+      const [label, ...valueParts] = trimmedLine.split(':');
+      const value = valueParts.join(':').trim();
+      const labelLower = label.trim().toLowerCase();
+      
+      // Verificar si es un campo especial
+      if (labelLower.includes('alergia') || labelLower.includes('alergico') || labelLower.includes('alérgico')) {
+        specialFields.alergias.push({label: label.trim(), value: value});
+        return; // No agregar a la sección actual
+      }
+      if (labelLower.includes('enfermedad') || labelLower.includes('patologia') || labelLower.includes('patología')) {
+        specialFields.enfermedades.push({label: label.trim(), value: value});
+        return; // No agregar a la sección actual
+      }
+    }
+    
+    // Detectar títulos principales (secciones)
+    if (isMainTitle(trimmedLine)) {
+      // Renderizar sección anterior si existe
+      if (currentSection && sectionContent.length > 0) {
+        formattedHTML += renderSection(currentSection, sectionContent);
+      }
+      
+      // Iniciar nueva sección
+      currentSection = trimmedLine;
+      sectionContent = [];
+    } else {
+      // Agregar contenido a la sección actual
+      sectionContent.push(trimmedLine);
+    }
+  });
+  
+  // Renderizar última sección
+  if (currentSection && sectionContent.length > 0) {
+    formattedHTML += renderSection(currentSection, sectionContent);
+  }
+  
+  // Renderizar secciones especiales independientes
+  if (specialFields.alergias.length > 0 || true) { // Siempre mostrar alergias
+    formattedHTML += renderSpecialSection('ALERGIAS Y REACCIONES ADVERSAS', specialFields.alergias, 'alergia');
+  }
+  
+  if (specialFields.enfermedades.length > 0 || true) { // Siempre mostrar enfermedades
+    formattedHTML += renderSpecialSection('ENFERMEDADES CRÓNICAS Y PATOLOGÍAS', specialFields.enfermedades, 'enfermedad');
+  }
+  
+  formattedHTML += `
+    </div>
+    
+    <!-- PIE DE DOCUMENTO - COMPACTO -->
+    <div class="mt-4 pt-3 border-t border-gray-300 dark:border-gray-600">
+      <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+        <div>
+          <p><strong>Sistema:</strong> Expedientes Médicos v2.0</p>
+        </div>
+        <div class="text-right">
+          <p><strong>Generado:</strong> ${new Date().toLocaleDateString('es-ES')}</p>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  formattedElement.innerHTML = formattedHTML;
 }
 
-// Función de respaldo para copiar
-function fallbackCopyTextToClipboard(text) {
-  const textArea = document.createElement("textarea");
-  textArea.value = text;
-  textArea.style.position = "fixed";
-  textArea.style.left = "-999999px";
-  textArea.style.top = "-999999px";
-  document.body.appendChild(textArea);
-  textArea.focus();
-  textArea.select();
+// Función para renderizar una sección profesional - CORREGIDA PARA ALERGIAS/ENFERMEDADES
+function renderSection(title, content) {
+  const sectionId = title.toLowerCase().replace(/[^a-z0-9]/g, '-');
   
-  try {
-    document.execCommand('copy');
-    showNotification('Expediente copiado al portapapeles', 'success');
-  } catch (err) {
-    showNotification('Error al copiar el expediente', 'error');
-  } finally {
-    document.body.removeChild(textArea);
-  }
+  let sectionHTML = `
+    <!-- SECCIÓN: ${escapeHtml(title)} -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden mb-4">
+      <!-- Encabezado de sección -->
+      <div class="bg-gradient-to-r from-indigo-600 to-blue-700 px-4 py-2">
+        <h2 class="text-base font-bold text-white flex items-center">
+          <div class="w-5 h-5 bg-white bg-opacity-20 rounded mr-2 flex items-center justify-center">
+            <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
+          </div>
+          ${escapeHtml(title)}
+        </h2>
+      </div>
+      
+      <!-- Contenido de sección -->
+      <div class="p-4">
+  `;
+  
+  let hasContent = false;
+  
+  content.forEach((line, index) => {
+    if (isFieldLine(line)) {
+      // Campo de información profesional
+      const [label, ...valueParts] = line.split(':');
+      const value = valueParts.join(':').trim();
+      const labelLower = label.trim().toLowerCase();
+      
+      // EXCLUIR campos especiales que ya tienen su propia sección
+      const isSpecialField = labelLower.includes('alergia') || labelLower.includes('alergico') || labelLower.includes('alérgico') ||
+                            labelLower.includes('enfermedad') || labelLower.includes('patologia') || labelLower.includes('patología');
+      
+      // Solo procesar si NO es un campo especial
+      if (!isSpecialField) {
+        // Lista de campos importantes médicos (excluyendo los especiales)
+        const importantFields = [
+          'medicamento', 'medicamentos', 'medicina', 'medicinas', 'farmaco', 'fármaco',
+          'diagnostico', 'diagnóstico', 'diagnosticos', 'diagnósticos',
+          'tratamiento', 'tratamientos',
+          'sintoma', 'síntoma', 'sintomas', 'síntomas',
+          'antecedente', 'antecedentes',
+          'condicion', 'condición', 'condiciones',
+          'padecimiento', 'padecimientos'
+        ];
+        
+        const isImportantField = importantFields.some(field => labelLower.includes(field));
+        
+        // MOSTRAR SI: tiene valor real O es un campo importante (siempre mostrar campos importantes)
+        if (value && (!isEmptyValue(value) || isImportantField)) {
+          hasContent = true;
+          
+          // Formatear el valor para campos importantes con valores vacíos
+          let displayValue = value;
+          if (isImportantField && (!value || isEmptyValue(value))) {
+            displayValue = `<span class="text-gray-500 dark:text-gray-400 italic">Sin registros</span>`;
+          } else {
+            displayValue = escapeHtml(value);
+          }
+          
+          sectionHTML += `
+            <div class="mb-3 pb-2 ${index < content.length - 1 ? 'border-b border-gray-100 dark:border-gray-700' : ''}">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div class="md:col-span-1">
+                  <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+                    ${escapeHtml(label.trim())}
+                  </label>
+                </div>
+                <div class="md:col-span-2">
+                  <div class="text-gray-900 dark:text-gray-100 font-medium bg-gray-50 dark:bg-gray-700/50 px-2 py-1.5 rounded border text-sm">
+                    ${displayValue}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+        // TAMBIÉN MOSTRAR campos importantes aún si no existen en el contenido
+        else if (isImportantField && !value) {
+          hasContent = true;
+          sectionHTML += `
+            <div class="mb-3 pb-2 ${index < content.length - 1 ? 'border-b border-gray-100 dark:border-gray-700' : ''}">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                <div class="md:col-span-1">
+                  <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+                    ${escapeHtml(label.trim())}
+                  </label>
+                </div>
+                <div class="md:col-span-2">
+                  <div class="text-gray-900 dark:text-gray-100 font-medium bg-gray-50 dark:bg-gray-700/50 px-2 py-1.5 rounded border text-sm">
+                    <span class="text-gray-500 dark:text-gray-400 italic">Sin registros</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+      }
+    } else if (isListItem(line)) {
+      // Lista profesional
+      const cleanText = line.replace(/^[-*•]\s*/, '').replace(/^\d+\.\s*/, '');
+      if (cleanText && !isEmptyValue(cleanText)) {
+        hasContent = true;
+        sectionHTML += `
+          <div class="mb-2 flex items-start space-x-2">
+            <div class="w-4 h-4 bg-blue-100 dark:bg-blue-900/50 rounded-full flex items-center justify-center mt-1 flex-shrink-0">
+              <div class="w-1.5 h-1.5 bg-blue-600 dark:bg-blue-400 rounded-full"></div>
+            </div>
+            <div class="flex-1 text-gray-700 dark:text-gray-300 leading-relaxed text-sm">
+              ${escapeHtml(cleanText)}
+            </div>
+          </div>
+        `;
+      }
+    } else if (isDateTime(line)) {
+      // Fecha/hora profesional
+      hasContent = true;
+      sectionHTML += `
+        <div class="mb-2 inline-flex items-center bg-green-50 dark:bg-green-900/30 px-2 py-1 rounded-md border border-green-200 dark:border-green-800">
+          <svg class="w-3 h-3 text-green-600 dark:text-green-400 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+          <span class="text-xs font-medium text-green-700 dark:text-green-300">${escapeHtml(line)}</span>
+        </div>
+      `;
+    } else {
+      // Texto normal profesional
+      if (line && !isEmptyValue(line)) {
+        hasContent = true;
+        sectionHTML += `
+          <div class="mb-2">
+            <p class="text-gray-700 dark:text-gray-300 leading-relaxed text-sm text-justify">
+              ${escapeHtml(line)}
+            </p>
+          </div>
+        `;
+      }
+    }
+  });
+  
+  sectionHTML += `
+      </div>
+    </div>
+  `;
+  
+  // Solo devolver la sección si tiene contenido
+  return hasContent ? sectionHTML : '';
 }
-// Función para mostrar notificaciones
+
+// Función para renderizar secciones especiales independientes (Alergias, Enfermedades, etc.)
+function renderSpecialSection(title, fields, fieldType) {
+  let sectionHTML = `
+    <!-- SECCIÓN ESPECIAL: ${escapeHtml(title)} -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden mb-4">
+      <!-- Encabezado de sección especial -->
+      <div class="bg-gradient-to-r from-red-600 to-pink-700 px-4 py-2">
+        <h2 class="text-base font-bold text-white flex items-center">
+          <div class="w-5 h-5 bg-white bg-opacity-20 rounded mr-2 flex items-center justify-center">
+            <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+          </div>
+          ${escapeHtml(title)}
+        </h2>
+      </div>
+      
+      <!-- Contenido de sección especial -->
+      <div class="p-4">
+  `;
+  
+  let hasContent = false;
+  
+  // Renderizar campos encontrados
+  if (fields && fields.length > 0) {
+    fields.forEach((field, index) => {
+      let displayValue = field.value;
+      if (!field.value || isEmptyValue(field.value)) {
+        displayValue = `<span class="text-gray-500 dark:text-gray-400 italic">Sin registros</span>`;
+      } else {
+        displayValue = escapeHtml(field.value);
+      }
+      
+      hasContent = true;
+      sectionHTML += `
+        <div class="mb-3 pb-2 ${index < fields.length - 1 ? 'border-b border-gray-100 dark:border-gray-700' : ''}">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+            <div class="md:col-span-1">
+              <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+                ${escapeHtml(field.label)}
+              </label>
+            </div>
+            <div class="md:col-span-2">
+              <div class="text-gray-900 dark:text-gray-100 font-medium bg-gray-50 dark:bg-gray-700/50 px-2 py-1.5 rounded border text-sm">
+                ${displayValue}
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  }
+  
+  // Si no hay campos, mostrar mensaje por defecto
+  if (!hasContent) {
+    hasContent = true;
+    sectionHTML += `
+      <div class="mb-3">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+          <div class="md:col-span-1">
+            <label class="block text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">
+              ${escapeHtml(title)}
+            </label>
+          </div>
+          <div class="md:col-span-2">
+            <div class="text-gray-900 dark:text-gray-100 font-medium bg-gray-50 dark:bg-gray-700/50 px-2 py-1.5 rounded border text-sm">
+              <span class="text-gray-500 dark:text-gray-400 italic">Sin registros</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+  
+  sectionHTML += `
+      </div>
+    </div>
+  `;
+  
+  return sectionHTML;
+}
+
+// Nueva función para detectar valores vacíos o "ninguno"
+function isEmptyValue(value) {
+  const emptyPatterns = [
+    'ninguno', 'ninguna', 'n/a', 'no aplica', 'no especificado', 'sin especificar',
+    'vacío', 'vacio', 'sin datos', 'no disponible', 'no tiene', 'no hay',
+    'no aplica', 'no aplicable', '--', '---', '____', '...', 'pendiente',
+    'sin información', 'sin informacion', 'no reporta', 'no presenta',
+    'null', 'undefined', 'no definido', 'sin definir', 'no registrado'
+  ];
+  
+  if (!value) return true;
+  
+  const cleanValue = value.toLowerCase().trim();
+  return cleanValue === '' || 
+         emptyPatterns.some(pattern => cleanValue === pattern) ||
+         /^[-_\s\.]*$/.test(cleanValue);
+}
+
+// Función mejorada para detectar títulos principales
+function isMainTitle(line) {
+  // Detectar títulos principales: líneas en mayúsculas, con ===, ---, o patrones médicos específicos
+  return /^[A-ZÁÉÍÓÚÑÜ\s\-_=]{3,}$/.test(line) || 
+         /^={3,}/.test(line) || 
+         /-{3,}/.test(line) ||
+         /^[A-ZÁÉÍÓÚÑÜ][A-ZÁÉÍÓÚÑÜ\s]{2,}$/.test(line) ||
+         /(DATOS|INFORMACIÓN|DIAGNÓSTICO|TRATAMIENTO|HISTORIA|EXAMEN|CONSULTA|EVOLUCIÓN)/i.test(line);
+}
+
+// Funciones auxiliares para detectar tipos de contenido - ACTUALIZADAS PARA PDF
+function isTitle(line) {
+  // Detectar títulos: líneas en mayúsculas, con ===, ---, o patrones específicos
+  return /^[A-ZÁÉÍÓÚÑÜ\s\-_=]{3,}$/.test(line) || 
+         /^={3,}/.test(line) || 
+         /-{3,}/.test(line) ||
+         /^[A-ZÁÉÍÓÚÑÜ][A-ZÁÉÍÓÚÑÜ\s]{2,}$/.test(line);
+}
+
+function isMainTitle(line) {
+  // Detectar títulos principales para secciones del PDF
+  return /^[A-ZÁÉÍÓÚÑÜ\s\-_=]{3,}$/.test(line) || 
+         /^={3,}/.test(line) || 
+         /-{3,}/.test(line) ||
+         /^[A-ZÁÉÍÓÚÑÜ][A-ZÁÉÍÓÚÑÜ\s]{2,}$/.test(line) ||
+         /(DATOS|INFORMACIÓN|DIAGNÓSTICO|TRATAMIENTO|HISTORIA|EXAMEN|CONSULTA|EVOLUCIÓN|ANTECEDENTES|SÍNTOMAS|MEDICAMENTOS|OBSERVACIONES)/i.test(line);
+}
+
+function isListItem(line) {
+  // Detectar elementos de lista
+  return /^[-*•]\s+/.test(line) || /^\d+\.\s+/.test(line);
+}
+
+function isFieldLine(line) {
+  // Detectar líneas con campos (contienen ":" y no son URLs)
+  return line.includes(':') && !line.includes('http') && line.split(':').length >= 2 && line.split(':')[0].trim().length > 0;
+}
+
+function isDateTime(line) {
+  // Detectar fechas y horarios más específicamente
+  return /\d{1,2}\/\d{1,2}\/\d{2,4}/.test(line) || 
+         /\d{1,2}:\d{2}/.test(line) ||
+         /(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)/i.test(line) ||
+         /\d{1,2}\s+(de\s+)?(enero|febrero|marzo|abril|mayo|junio|julio|agosto|septiembre|octubre|noviembre|diciembre)/i.test(line);
+}
+
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Función para mostrar notificaciones mejorada
 function showNotification(message, type) {
   const notification = document.createElement('div');
-  notification.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg transition-all duration-300 
-                            ${type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'}`;
-  notification.textContent = message;
+  let bgColor = 'bg-blue-500';
+  let icon = 'ℹ️';
+  
+  switch(type) {
+    case 'success':
+      bgColor = 'bg-green-500';
+      icon = '✅';
+      break;
+    case 'error':
+      bgColor = 'bg-red-500';
+      icon = '❌';
+      break;
+    case 'info':
+      bgColor = 'bg-blue-500';
+      icon = 'ℹ️';
+      break;
+  }
+  
+  notification.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-lg transition-all duration-300 transform translate-x-full 
+                            ${bgColor} text-white flex items-center space-x-2 max-w-sm z-50`;
+  notification.innerHTML = `
+    <span class="text-lg">${icon}</span>
+    <span class="text-sm font-medium">${message}</span>
+  `;
   
   document.body.appendChild(notification);
   
+  // Animación de entrada
   setTimeout(() => {
-    notification.classList.add('opacity-0');
+    notification.classList.remove('translate-x-full');
+  }, 100);
+  
+  // Animación de salida
+  setTimeout(() => {
+    notification.classList.add('translate-x-full');
     setTimeout(() => {
-      document.body.removeChild(notification);
+      if (document.body.contains(notification)) {
+        document.body.removeChild(notification);
+      }
     }, 300);
   }, 3000);
 }
+
 // Animación de sacudida
 const style = document.createElement('style');
 style.innerHTML = `
@@ -475,6 +898,123 @@ style.innerHTML = `
   0%, 100% { transform: translateX(0); }
   20%, 80% { transform: translateX(-10px); }
   40%, 60% { transform: translateX(10px); }
-}`;
+}
+
+/* Mejorar el scroll del contenedor del expediente */
+#expediente-content .overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+}
+
+#expediente-content .overflow-y-auto::-webkit-scrollbar-track {
+  background: rgba(156, 163, 175, 0.1);
+  border-radius: 3px;
+}
+
+#expediente-content .overflow-y-auto::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 3px;
+}
+
+#expediente-content .overflow-y-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.7);
+}
+
+/* Estilos para el formato PDF profesional */
+#expediente-formatted {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #1f2937;
+}
+
+#expediente-formatted h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+}
+
+#expediente-formatted h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+
+/* Efectos de impresión para el formato PDF */
+@media print {
+  #expediente-formatted {
+    color: #000 !important;
+    background: #fff !important;
+  }
+  
+  #expediente-formatted .bg-gradient-to-r {
+    background: #2563eb !important;
+    color: #fff !important;
+  }
+  
+  #expediente-formatted .border {
+    border-color: #000 !important;
+  }
+}
+
+/* Sombras y efectos para las secciones */
+#expediente-formatted .bg-white {
+  transition: all 0.2s ease;
+}
+
+#expediente-formatted .bg-white:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Animaciones de entrada */
+@keyframes fade-in-up-delay-2 {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up-delay-2 {
+  animation: fade-in-up-delay-2 0.6s ease-out 0.4s both;
+}
+
+/* Estilos para modo oscuro en el formato PDF */
+.dark #expediente-formatted {
+  color: #e5e7eb;
+}
+
+.dark #expediente-formatted h1,
+.dark #expediente-formatted h2 {
+  color: #f3f4f6;
+}
+
+/* Mejoras tipográficas para el PDF */
+#expediente-formatted p {
+  text-align: justify;
+  hyphens: auto;
+  word-spacing: 0.1em;
+}
+
+#expediente-formatted .uppercase {
+  letter-spacing: 0.1em;
+  font-weight: 600;
+}
+
+/* Bordes y separadores profesionales */
+#expediente-formatted .border-b {
+  border-bottom-width: 1px;
+  border-style: solid;
+}
+
+#expediente-formatted .border-t-2 {
+  border-top-width: 2px;
+  border-style: solid;
+}
+`;
+
+document.head.appendChild(style);
 </script>
 {% endblock %}
